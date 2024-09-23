@@ -19,6 +19,11 @@ export interface CarsProps {
   km: string;
   images: CarImaeProps[];
   uid: string;
+  model?: string;
+  description?: string;
+  created?: string;
+  whatsapp?: string;
+  owner?: string;
 }
 
 interface CarImaeProps {
