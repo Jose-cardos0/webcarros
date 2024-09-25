@@ -5,7 +5,7 @@ import { db } from "../../services/services";
 import { doc, getDoc } from "firebase/firestore";
 
 //router
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 //interface
 import { CarsProps } from "../Home/Home";
@@ -23,6 +23,7 @@ export function CarDetail() {
   const { id } = useParams();
   const [car, setCar] = useState<CarsProps>();
   const [sliderPreView, setSliderPewVier] = useState<number>(2);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) {
@@ -31,6 +32,9 @@ export function CarDetail() {
 
     const conectDb = doc(db, "cars", id);
     getDoc(conectDb).then((snapshot) => {
+      if (!snapshot.data()) {
+        navigate("/");
+      }
       setCar({
         id: snapshot.id,
         name: snapshot.data()?.name,
@@ -70,21 +74,23 @@ export function CarDetail() {
 
   return (
     <Container>
-      <Swiper
-        slidesPerView={sliderPreView}
-        pagination={{ clickable: true }}
-        navigation
-      >
-        {car?.images.map((image) => (
-          <SwiperSlide key={image.name}>
-            <img
-              className="w-full h-96 object-cover"
-              src={image.url}
-              alt="Car Image"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {car && (
+        <Swiper
+          slidesPerView={sliderPreView}
+          pagination={{ clickable: true }}
+          navigation
+        >
+          {car?.images.map((image) => (
+            <SwiperSlide key={image.name}>
+              <img
+                className="w-full h-96 object-cover"
+                src={image.url}
+                alt="Car Image"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
 
       {car && (
         <main className="w-full bg-white rounded-lg p-6 my-4">
@@ -121,9 +127,10 @@ export function CarDetail() {
             <p>{car?.whatsapp}</p>
           </strong>
           <a
+            href={`https://api.whatsapp.com/send?phone=${car?.whatsapp}&text=Olá vi esse ${car?.name} no site SergipeCars e fiquei interessado!`}
+            target="_blank"
             className="bg-green-500 w-full text-white flex items-center justify-center gap-2 my-6
             h-11 text-xl rounded-lg font-medium"
-            href="#"
           >
             Conversar com o vendedor
             <FaWhatsapp size={26} color="#FFF" />
