@@ -63,6 +63,7 @@ export function Login() {
       <div className="w-full min-h-screen flex justify-center items-center flex-col gap-4">
         <Link className="mb-6 max-w-sm w-full" to={"/"}>
           <img className="w-full" src={logo} alt="logo sergipe car" />
+          <p className="text-center">Conta DEMO</p>
         </Link>
 
         <form
@@ -72,7 +73,7 @@ export function Login() {
           <div className="mb-3">
             <Input
               type="email"
-              placeholder="Digite seu email..."
+              placeholder="use o email: testedemo@gmail.com"
               name="email"
               error={errors.email?.message}
               register={register}
@@ -81,7 +82,7 @@ export function Login() {
           <div className="mb-3">
             <Input
               type="password"
-              placeholder="Digite sua senha..."
+              placeholder="use a senha: 00000000"
               name="password"
               error={errors.password?.message}
               register={register}
